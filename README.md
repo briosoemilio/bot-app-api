@@ -11,6 +11,6 @@ To Setup locally:
 
 3.) Run `npx prisma migrate dev`
 
-4.) Rename .env.sample file to `.env` then input the credentials of your local database and port to run.
+4.) Rename `sample.env` file to `.env` then input the credentials of your local database and port to run.
 
 5.) Run `npm run start:dev`
