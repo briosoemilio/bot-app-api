@@ -44,7 +44,12 @@ export class BotsController {
   @Get('all')
   async findAll() {
     const allBots: Bot[] = await this.botsService.findAll();
-    return allBots;
+    return {
+      status: 200,
+      isSuccessful: true,
+      message: 'Successfully created bot.',
+      data: allBots,
+    };
   }
 
   // Get Specific Bot Method
@@ -52,7 +57,12 @@ export class BotsController {
   async findOne(@Param('id') id: string) {
     const parseId = parseInt(id);
     const bot: Bot = await this.botsService.findOne(parseId);
-    return bot;
+    return {
+      status: 200,
+      isSuccessful: true,
+      message: 'Successfully retreived bot.',
+      data: bot,
+    };
   }
 
   // Update Specific Bot Method
@@ -63,7 +73,12 @@ export class BotsController {
       parseId,
       updateBotDto,
     );
-    return updatedBot;
+    return {
+      status: 200,
+      isSuccessful: true,
+      message: 'Successfully edited bot.',
+      data: updatedBot,
+    };
   }
 
   @Delete(':id')
@@ -87,6 +102,8 @@ export class BotsController {
     const botName = bot.name;
     await this.botsService.remove(parseId);
     return {
+      status: 200,
+      isSuccessful: true,
       message: `Successfully removed bot: ${botName}, id: ${botId}`,
     };
   }
