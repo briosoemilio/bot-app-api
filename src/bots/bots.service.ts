@@ -14,8 +14,9 @@ export class BotsService {
     return bot;
   }
 
-  findAll() {
-    return `This action returns all bots`;
+  async findAll() {
+    const allBots: Bot[] = await this.prisma.bot.findMany();
+    return allBots;
   }
 
   findOne(id: number) {

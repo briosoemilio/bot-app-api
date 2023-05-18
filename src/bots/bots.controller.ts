@@ -17,6 +17,7 @@ import { Bot } from '@prisma/client';
 export class BotsController {
   constructor(private readonly botsService: BotsService) {}
 
+  // Create Bot Method
   @Post('create')
   async create(@Body() createBotDto: CreateBotDto) {
     // Create Bot
@@ -37,9 +38,11 @@ export class BotsController {
     };
   }
 
+  // Get All Bots Method
   @Get('all')
   findAll() {
-    return this.botsService.findAll();
+    const allBots = this.botsService.findAll();
+    return allBots;
   }
 
   @Get(':id')
