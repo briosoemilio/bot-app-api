@@ -14,3 +14,7 @@ To Setup locally:
 4.) Rename `sample.env` file to `.env` then input the credentials of your local database and port to run.
 
 5.) Run `npm run start:dev`
+
+Tech used:
+
+NestJS, Prisma
