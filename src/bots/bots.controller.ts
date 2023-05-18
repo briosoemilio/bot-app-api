@@ -41,7 +41,7 @@ export class BotsController {
   // Get All Bots Method
   @Get('all')
   async findAll() {
-    const allBots = await this.botsService.findAll();
+    const allBots: Bot[] = await this.botsService.findAll();
     return allBots;
   }
 
@@ -49,13 +49,19 @@ export class BotsController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const parseId = parseInt(id);
-    const bot = await this.botsService.findOne(parseId);
+    const bot: Bot = await this.botsService.findOne(parseId);
     return bot;
   }
 
+  // Update Specific Bot Method
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBotDto: UpdateBotDto) {
-    return this.botsService.update(+id, updateBotDto);
+  async update(@Param('id') id: string, @Body() updateBotDto: UpdateBotDto) {
+    const parseId = parseInt(id);
+    const updatedBot: Bot = await this.botsService.update(
+      parseId,
+      updateBotDto,
+    );
+    return updatedBot;
   }
 
   @Delete(':id')
