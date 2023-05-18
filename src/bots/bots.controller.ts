@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  HttpException,
   HttpStatus,
 } from '@nestjs/common';
 import { BotsService } from './bots.service';
@@ -14,6 +13,7 @@ import { CreateBotDto } from './dto/create-bot.dto';
 import { UpdateBotDto } from './dto/update-bot.dto';
 import { generateDicebearAvatar } from 'src/helpers/dicebearHelper';
 import { Bot } from '@prisma/client';
+import { throwNewException } from 'src/helpers/helpers';
 
 @Controller('bots')
 export class BotsController {
@@ -22,6 +22,12 @@ export class BotsController {
   // Create Bot Method
   @Post('create')
   async create(@Body() createBotDto: CreateBotDto) {
+    // Validate bot name
+    const isBotExist = await this.botsService.findByName(createBotDto.name);
+    if (isBotExist) {
+      throwNewException(HttpStatus.BAD_REQUEST, 'Bot name already exists.');
+    }
+
     // Create Bot
     const bot: Bot = await this.botsService.create(createBotDto);
     const { name, id } = bot;
@@ -47,7 +53,7 @@ export class BotsController {
     return {
       status: 200,
       isSuccessful: true,
-      message: 'Successfully created bot.',
+      message: 'Successfully retrieved all bots.',
       data: allBots,
     };
   }
@@ -57,6 +63,9 @@ export class BotsController {
   async findOne(@Param('id') id: string) {
     const parseId = parseInt(id);
     const bot: Bot = await this.botsService.findOne(parseId);
+    if (!bot) {
+      throwNewException(HttpStatus.GONE, 'Bot does not exist');
+    }
     return {
       status: 200,
       isSuccessful: true,
@@ -87,13 +96,9 @@ export class BotsController {
 
     // prevent deletion of seed bot
     if (parseId === 1) {
-      throw new HttpException(
-        {
-          status: HttpStatus.FORBIDDEN,
-          isSuccessful: false,
-          message: 'You cannot delete optimus pride.',
-        },
+      throwNewException(
         HttpStatus.FORBIDDEN,
+        'You cannot delete optimus pride.',
       );
     }
 

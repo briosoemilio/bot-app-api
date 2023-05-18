@@ -13,7 +13,7 @@ datasource db {
 // Models
 model Bot {
   id           Int      @id @default(autoincrement())
-  name         String
+  name         String   @unique()
   purpose      String
   attack       Int
   defense      Int

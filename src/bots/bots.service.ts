@@ -24,6 +24,11 @@ export class BotsService {
     return bot;
   }
 
+  async findByName(name: string) {
+    const bot: Bot = await this.prisma.bot.findUnique({ where: { name } });
+    return bot;
+  }
+
   // Update Bot Service
   async update(id: number, updateBotDto: UpdateBotDto) {
     const updatedBot: Bot = await this.prisma.bot.update({
