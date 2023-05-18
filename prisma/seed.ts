@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 async function main() {
   const optimusPrimeRecord = await prisma.bot.create({
     data: {
-      id: 1,
       name: 'Optimus Prime',
       purpose: 'I am the prime bot, I will initialize the database.',
       attack: 99999,
@@ -17,7 +16,6 @@ async function main() {
       isFavorite: true,
     },
   });
-
   console.log({ optimusPrimeRecord });
 }
 main()
