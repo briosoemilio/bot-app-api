@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { BotsService } from './bots.service';
 import { CreateBotDto } from './dto/create-bot.dto';
@@ -65,7 +67,27 @@ export class BotsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.botsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const parseId = parseInt(id);
+
+    // prevent deletion of seed bot
+    if (parseId === 1) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          isSuccessful: false,
+          message: 'You cannot delete optimus pride.',
+        },
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const bot: Bot = await this.botsService.findOne(parseId);
+    const botId = bot.id;
+    const botName = bot.name;
+    await this.botsService.remove(parseId);
+    return {
+      message: `Successfully removed bot: ${botName}, id: ${botId}`,
+    };
   }
 }

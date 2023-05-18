@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateBotDto } from './dto/create-bot.dto';
 import { UpdateBotDto } from './dto/update-bot.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -33,7 +33,7 @@ export class BotsService {
     return updatedBot;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bot`;
+  async remove(id: number) {
+    await this.prisma.bot.delete({ where: { id } });
   }
 }
