@@ -19,8 +19,9 @@ export class BotsService {
     return allBots;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bot`;
+  async findOne(id: number) {
+    const bot: Bot = await this.prisma.bot.findUnique({ where: { id } });
+    return bot;
   }
 
   // Update Bot Service

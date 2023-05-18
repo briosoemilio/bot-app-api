@@ -40,14 +40,17 @@ export class BotsController {
 
   // Get All Bots Method
   @Get('all')
-  findAll() {
-    const allBots = this.botsService.findAll();
+  async findAll() {
+    const allBots = await this.botsService.findAll();
     return allBots;
   }
 
+  // Get Specific Bot Method
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.botsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const parseId = parseInt(id);
+    const bot = await this.botsService.findOne(parseId);
+    return bot;
   }
 
   @Patch(':id')
